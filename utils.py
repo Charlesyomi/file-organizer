@@ -1,4 +1,5 @@
 from pathlib import Path
+import shutil
 
 def scan_directory(path:str) -> list :
     """scans a directory for files
@@ -77,7 +78,32 @@ def classify_file(path:Path) -> str:
     ext = path.suffix.casefold()
     category = EXTENSION_CATEGORIES.get(ext, "Other")
 
-    print(category)
+    # print(category)
     return category
 
-classify_file(Path("pandas.JPG"))
+# classify_file(Path("pandas.JPG"))
+
+def move_file(src:Path, dest_folder:Path) -> Path :
+    """moves a given file to a given destination even if has to create destination folders
+
+    Args:
+        src: Path Object of the file to be moved
+        dest_folder: Path Object for the move endpoint
+    
+    Returns:
+        Path Object of the new file location
+
+    Raises:
+        FileExistsError if file already exists in new location
+    """
+
+    dest_path = dest_folder / src.name
+
+    if dest_path.exists():
+        raise FileExistsError(f"{src.name} already exists at {dest_path}")
+
+    dest_folder.mkdir(exist_ok=True, parents=True)
+
+    shutil.move(src, dest_path)
+
+    return dest_path
