@@ -80,4 +80,4 @@ def classify_file(path:Path) -> str:
     print(category)
     return category
 
-classify_file(Path("Readme"))
+classify_file(Path("pandas.JPG"))
