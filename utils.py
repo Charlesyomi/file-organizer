@@ -1,17 +1,16 @@
 from pathlib import Path
 import shutil
 
-def scan_directory(path:str) -> list :
+def scan_directory(path:Path) -> list :
     """scans a directory for files
 
     Args:
-        path: string, the path to the directory
+        path: Path obj, the path to the directory
 
     Returns:
         a list containing just files in a directory
     """
-    path_obj = Path(path)  #generate path object to work with
-    return [file for file in path_obj.iterdir() if file.is_file()]
+    return [file for file in path.iterdir() if file.is_file()]
 
 EXTENSION_CATEGORIES = {
     # Documents
@@ -94,7 +93,9 @@ def move_file(src:Path, dest_folder:Path) -> Path :
         Path Object of the new file location
 
     Raises:
-        FileExistsError if file already exists in new location
+        FileExistsError: if file already exists in new location
+        FileNotFoundError: if destination folder DNE--slim chance from a TOCTOU window
+        PermissionError: if user does not have move to/ create permission for dest folder
     """
 
     dest_path = dest_folder / src.name
@@ -107,3 +108,4 @@ def move_file(src:Path, dest_folder:Path) -> Path :
     shutil.move(src, dest_path)
 
     return dest_path
+
