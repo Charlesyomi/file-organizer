@@ -8,6 +8,7 @@ def organize_directory(source:Path, dry_run : bool = False):
 
     Args:
         source (Path): path obj for the directory to organize
+        dry_run (bool) : true to test run the function without actual move, false for actual move
 
     Returns:
         None
@@ -17,9 +18,6 @@ def organize_directory(source:Path, dry_run : bool = False):
 
     if not files:
         print(f"No files exist in the directory '{source.name}' to organize")
-
-    if dry_run:
-        print()
 
     for file in files:
         category = classify_file(file)
@@ -46,7 +44,7 @@ if __name__ == "__main__":
     parser.add_argument("--dry-run", action="store_true", help="Preview without moving files")
 
     args = parser.parse_args()
-    
+
     organize_directory(source=Path(args.source), dry_run=args.dry_run)
 
 
